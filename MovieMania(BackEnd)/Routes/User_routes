@@ -1,0 +1,23 @@
+const express = require('express');
+const user_router = express.Router();
+const { jwt_authenticate } = require('../Middlewares/jwt_authentication')
+
+const {
+    handlePostSignupForm,
+    handleLogout,
+    handlePostUserLogin,}=require('../Controllers/User_Controllers');
+
+// Login/signup routes
+user_router.post('/api/signup', handlePostSignupForm);
+user_router.post('/api/login', handlePostUserLogin);
+user_router.get("/api/auth/check", jwt_authenticate, (req, res) => {
+  return res.status(200).json({ message: "Authenticated", user: req.user });
+});
+
+user_router.get('/api/user', jwt_authenticate, (req, res) => {
+  res.json({ name: req.user.username, email: req.user.email });
+});
+
+user_router.get('/api/logout', handleLogout);
+
+module.exports = { user_router };
