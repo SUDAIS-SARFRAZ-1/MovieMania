@@ -65,6 +65,9 @@ const App = () => {
           </Routes>
         </>
       )}
+      const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+
+      console.log("TMDB API KEY EXISTS:", !!API_KEY);
     </>
   );
 };
