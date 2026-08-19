@@ -17,9 +17,8 @@ app.use('/api/watchlist', router);
 
 
 
-// Server Setup
-const port = 8000;
-const host = '127.0.0.1';
-app.listen(port, host, () => {
-    console.log(`Server running on http://${host}:${port}`);
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
