@@ -1,22 +1,16 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { getWatchlist, removeFromWatchlist } from "../utils/watchlist";
 
 const Watchlist = () => {
   const [items, setItems] = useState([]);
 
-  const fetchWatchlist = async () => {
-    const res = await axios.get("/api/watchlist", { withCredentials: true });
-    setItems(res.data);
-  };
-
-  const removeFromWatchlist = async (id) => {
-    await axios.delete(`/api/watchlist/${id}`, { withCredentials: true });
-    setItems(items.filter((item) => item._id !== id));
-  };
-
   useEffect(() => {
-    fetchWatchlist();
+    setItems(getWatchlist());
   }, []);
+
+  const handleRemove = (mediaId) => {
+    setItems(removeFromWatchlist(mediaId));
+  };
 
   return (
     <div
@@ -31,29 +25,35 @@ const Watchlist = () => {
         🎬 My Lists
       </h1>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {items.map((item) => (
-          <div
-            key={item._id}
-            className="bg-white/10 backdrop-blur-sm p-3 rounded-xl shadow-md"
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/w200${item.poster}`}
-              alt={item.title}
-              className="rounded-lg w-full"
-            />
-            <h2 className="text-white text-sm mt-3 font-medium text-center">
-              {item.title}
-            </h2>
-            <button
-              onClick={() => removeFromWatchlist(item._id)}
-              className="mt-2 block mx-auto text-sm text-red-400 hover:underline"
+      {items.length === 0 ? (
+        <p className="text-center text-gray-300">
+          Your watchlist is empty. Add movies or shows from their details page.
+        </p>
+      ) : (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {items.map((item) => (
+            <div
+              key={item.mediaId}
+              className="bg-white/10 backdrop-blur-sm p-3 rounded-xl shadow-md"
             >
-              ❌ Remove
-            </button>
-          </div>
-        ))}
-      </div>
+              <img
+                src={`https://image.tmdb.org/t/p/w200${item.poster}`}
+                alt={item.title}
+                className="rounded-lg w-full"
+              />
+              <h2 className="text-white text-sm mt-3 font-medium text-center">
+                {item.title}
+              </h2>
+              <button
+                onClick={() => handleRemove(item.mediaId)}
+                className="mt-2 block mx-auto text-sm text-red-400 hover:underline"
+              >
+                ❌ Remove
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

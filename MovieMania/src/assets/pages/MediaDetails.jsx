@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { getDetails, getVideos, getCredits } from "../api/Tmdb";
+import { addToWatchlist, isInWatchlist } from "../utils/watchlist";
 
 const MediaDetails = () => {
   const { mediaType, id } = useParams();
   const [data, setData] = useState(null);
   const [trailer, setTrailer] = useState(null);
   const [cast, setCast] = useState([]);
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     const fetchAll = async () => {
@@ -18,6 +19,7 @@ const MediaDetails = () => {
       ]);
 
       setData(details);
+      setSaved(isInWatchlist(details.id));
 
       const trailerVideo = videos.find(
         (v) => v.type === "Trailer" && v.site === "YouTube"
@@ -29,21 +31,14 @@ const MediaDetails = () => {
     fetchAll();
   }, [mediaType, id]);
 
-  const handleAddToWatchlist = async () => {
-    try {
-      const res = await axios.post("/api/watchlist/add", {
-        mediaId: data.id,
-        title: data.title || data.name,
-        poster: data.poster_path,
-        mediaType,
-      });
-
-      console.log(res.data.message);
-      alert("✅ Added to watchlist!");
-    } catch (err) {
-      console.error("❌ Failed to add to watchlist:", err);
-      alert(err.response?.data?.message || "Error adding to watchlist");
-    }
+  const handleAddToWatchlist = () => {
+    addToWatchlist({
+      mediaId: data.id,
+      title: data.title || data.name,
+      poster: data.poster_path,
+      mediaType,
+    });
+    setSaved(true);
   };
 
   if (!data) return <div className="text-white p-8">Loading...</div>;
@@ -106,9 +101,10 @@ const MediaDetails = () => {
         <div>
           <button
             onClick={handleAddToWatchlist}
-            className="px-4 py-2 rounded text-white hover:bg-[#0bd1d1] transition"
+            disabled={saved}
+            className="px-4 py-2 rounded text-white hover:bg-[#0bd1d1] transition disabled:opacity-60 disabled:hover:bg-transparent"
           >
-            ➕ Add to Watchlist
+            {saved ? "✅ In Watchlist" : "➕ Add to Watchlist"}
           </button>
         </div>
       </div>
