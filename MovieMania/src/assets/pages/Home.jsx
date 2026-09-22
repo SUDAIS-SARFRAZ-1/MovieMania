@@ -55,7 +55,7 @@ const Home = () => {
 
   return (
     <div
-      className="min-h-screen bg-no-repeat bg-center bg-cover bg-fixed px-6 pt-28 pb-12 transition-all duration-500"
+      className="min-h-screen bg-no-repeat bg-center bg-cover bg-fixed px-3 sm:px-6 pt-24 sm:pt-28 pb-12 transition-all duration-500"
       style={{
         backgroundImage: bgImage ? `url(${bgImage})` : "none",
         backgroundColor: "#000",

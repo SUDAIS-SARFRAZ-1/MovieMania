@@ -14,9 +14,9 @@ const Watchlist = () => {
 
   return (
     <div
-      className="min-h-screen px-4 pt-24 pb-12 bg-cover bg-center text-white"
+      className="min-h-screen px-3 sm:px-4 pt-20 sm:pt-24 pb-12 bg-cover bg-center text-white"
       style={{
-        backgroundImage: `url('backround.jpg')`,
+        backgroundImage: `url('/backround.jpg')`,
         backgroundColor: "rgba(0,0,0,0.85)",
         backgroundBlendMode: "darken",
       }}
@@ -30,7 +30,7 @@ const Watchlist = () => {
           Your watchlist is empty. Add movies or shows from their details page.
         </p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-6">
           {items.map((item) => (
             <div
               key={item.mediaId}

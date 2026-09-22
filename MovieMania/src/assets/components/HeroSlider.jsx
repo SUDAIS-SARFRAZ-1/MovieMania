@@ -11,6 +11,7 @@ const HeroSlider = ({ items = [], setBgImage }) => {
 
   // Auto-rotate the slider every 5 seconds
   useEffect(() => {
+    if (items.length === 0) return;
     const interval = setInterval(() => {
       // Go to next index cyclically
       setCurrentIndex((prev) => (prev + 1) % items.length);
@@ -31,6 +32,8 @@ const HeroSlider = ({ items = [], setBgImage }) => {
     }
   }, [currentIndex, items, setBgImage]);
 
+  if (items.length === 0) return null;
+
   // Determine media type for routing: movie or tv
   const getMediaType = (item) => {
     if (item.media_type) return item.media_type;         // Use provided media_type
@@ -48,15 +51,20 @@ const HeroSlider = ({ items = [], setBgImage }) => {
   const centerItem = getItem(currentIndex);
   const rightItem = getItem(currentIndex + 1);
 
+  const sideCardClass =
+    "w-[72px] sm:w-[110px] md:w-[160px] lg:w-[200px] aspect-[2/3] rounded-xl z-20 opacity-60 hover:opacity-80 transform hover:scale-105 transition-all duration-300 shrink-0";
+  const centerCardClass =
+    "w-[140px] sm:w-[190px] md:w-[250px] lg:w-[300px] aspect-[2/3] rounded-2xl z-30 transform hover:scale-105 md:hover:scale-110 transition-all duration-500 shrink-0";
+
   return (
-    <div className="relative w-full overflow-x-hidden h-[480px] flex items-center justify-center mb-16 px-4">
+    <div className="relative w-full overflow-x-hidden flex items-center justify-center mb-10 sm:mb-14 md:mb-16 px-2 sm:px-4 py-4">
       {/* Carousel container (centered horizontally) */}
-      <div className="relative flex items-center justify-center w-[1200px] gap-6">
+      <div className="relative flex items-center justify-center w-full max-w-[1200px] gap-1.5 sm:gap-3 md:gap-5 lg:gap-6">
         {/* Left Item */}
         {leftItem && (
           <Link
             to={`/${getMediaType(leftItem)}/${leftItem.id}`}
-            className="w-[200px] h-[320px] rounded-xl z-20 opacity-60 hover:opacity-80 transform hover:scale-105 transition-all duration-300 -translate-x-8"
+            className={`${sideCardClass} -translate-x-1 sm:-translate-x-3 md:-translate-x-6 lg:-translate-x-8`}
           >
             <img
               src={`${imageBaseUrl}${
@@ -72,7 +80,7 @@ const HeroSlider = ({ items = [], setBgImage }) => {
         {centerItem && (
           <Link
             to={`/${getMediaType(centerItem)}/${centerItem.id}`}
-            className="w-[300px] h-[420px] rounded-2xl z-30 transform hover:scale-110 transition-all duration-500"
+            className={centerCardClass}
           >
             <img
               src={`${imageBaseUrl}${
@@ -88,7 +96,7 @@ const HeroSlider = ({ items = [], setBgImage }) => {
         {rightItem && (
           <Link
             to={`/${getMediaType(rightItem)}/${rightItem.id}`}
-            className="w-[200px] h-[320px] rounded-xl z-20 opacity-60 hover:opacity-80 transform hover:scale-105 transition-all duration-300 translate-x-8"
+            className={`${sideCardClass} translate-x-1 sm:translate-x-3 md:translate-x-6 lg:translate-x-8`}
           >
             <img
               src={`${imageBaseUrl}${

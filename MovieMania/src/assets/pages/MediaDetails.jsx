@@ -45,7 +45,7 @@ const MediaDetails = () => {
 
   return (
     <div
-      className="min-h-screen text-white px-6 pt-20 pb-12 bg-cover bg-center"
+      className="min-h-screen text-white px-4 sm:px-6 pt-20 pb-12 bg-cover bg-center"
       style={{
         backgroundImage: `url(https://image.tmdb.org/t/p/original${data.backdrop_path})`,
         backgroundColor: "rgba(0,0,0,0.9)",
@@ -55,20 +55,22 @@ const MediaDetails = () => {
       {/* 🎬 Trailer */}
       {trailer && (
         <div className="mb-8 flex justify-center">
-          <iframe
-            width="55%"
-            height="480"
-            src={`https://www.youtube.com/embed/${trailer}?autoplay=1&mute=1&controls=1`}
-            title="Trailer"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="rounded-xl"
-          ></iframe>
+          <div className="w-full sm:w-[85%] md:w-[70%] lg:w-[60%] aspect-video">
+            <iframe
+              width="100%"
+              height="100%"
+              src={`https://www.youtube.com/embed/${trailer}?autoplay=1&mute=1&controls=1`}
+              title="Trailer"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="rounded-xl"
+            ></iframe>
+          </div>
         </div>
       )}
 
       {/* 🎞️ Title */}
-      <h1 className="text-4xl font-bold mb-4">{data.title || data.name}</h1>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{data.title || data.name}</h1>
 
       {/* 🏢 Production + 🎭 Genres + ➕ Button */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">

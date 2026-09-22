@@ -49,7 +49,7 @@ const TVShows = () => {
 
   return (
     <div
-      className="min-h-screen bg-black text-white px-6 pt-28 pb-12"
+      className="min-h-screen bg-black text-white px-3 sm:px-6 pt-24 sm:pt-28 pb-12"
       style={{
         backgroundImage: `url('backround.jpg')`,
         backgroundColor: "rgba(0,0,0,0.85)",
